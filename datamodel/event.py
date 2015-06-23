@@ -1,3 +1,4 @@
+import typing
 from enum import Enum
 
 import basketball.utils as utils
@@ -5,10 +6,14 @@ import basketball.utils as utils
 event_types = [
     'quarter_start', 'quarter_finish', 'jump_ball', 'shot_made', 'shot_miss',
     'turnover', 'offensive_rebound', 'defensive_rebound', 'foul',
-    'free_throw_made', 'free_throw_missed', ''
+    'free_throw_made', 'free_throw_missed', 'substitution', 'ejection', 'injury',
+    'timeout', 'blocked_shot', 'rule_violation', 'assist',
 ]
 
 EventType = Enum('EventType', " ".join(event_types))
+
+
+Score = typing.NamedTuple('Score', [('home', int), ('away', int)])
 
 
 class EventTime:
@@ -18,7 +23,7 @@ class EventTime:
         self.seconds = seconds
         self.milliseconds = milliseconds
 
-    def equality(self, other: EventTime) -> int:
+    def equality(self, other) -> int:
         minute_comparison = utils.cmp(self.minutes, other.minutes)
         if minute_comparison != 0:
             return minute_comparison
@@ -33,32 +38,32 @@ class EventTime:
 
         return 0
 
-    def __lt__(self, other: EventTime) -> bool:
+    def __lt__(self, other) -> bool:
         if self.equality(other) == -1:
             return True
         return False
 
-    def __le__(self, other: EventTime) -> bool:
+    def __le__(self, other) -> bool:
         if self.__lt__(other) or self.__eq__(other):
             return True
         return False
 
-    def __eq__(self, other: EventTime) -> bool:
+    def __eq__(self, other) -> bool:
         if self.equality(other) == 0:
             return True
         return False
 
-    def __ne__(self, other: EventTime) -> bool:
+    def __ne__(self, other) -> bool:
         if self.__eq__(other):
             return False
         return True
 
-    def __gt__(self, other: EventTime) -> bool:
+    def __gt__(self, other) -> bool:
         if self.equality(other) == 1:
             return True
         return False
 
-    def __ge__(self, other: EventTime) -> bool:
+    def __ge__(self, other) -> bool:
         if self.__gt__(other) or self.__eq__(other):
             return True
         return False
